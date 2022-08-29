@@ -1,27 +1,27 @@
 node {
 	stage("Checkout - AuthService"){
-		git url: 'http://github.com/dipendrashrestha1281/teamCDauthServiceRepo'
+		git branch: 'main', url: 'https://github.com/dipendrashrestha1281/msd-dataservice'
 	}
 	
 	stage("Gradle Build - AuthService"){
-		sh 'gradle -b teamCDmccauthservice/build.gradle clean build'
+		sh 'gradle clean build'
 	}
 	
 	stage ("Gradle Bootjar-Package - AuthService") {
-        sh 'gradle -b teamCDmccauthservice/build.gradle bootjar'
+        sh 'gradle bootjar'
     }
     
     stage ("Containerize the app-docker build - AuthService") {
-        sh 'docker build --rm -t authapi:v1.0 .'
+        sh 'docker build --rm -t test-authapi:v1.0 .'
     }
     
     stage ("Inspect the docker image - AuthService"){
-        sh "docker images authapi:v1.0"
-        sh "docker inspect authapi:v1.0"
+        sh "docker images test-authapi:v1.0"
+        sh "docker inspect test-authapi:v1.0"
     }
     
     stage ("Run Docker container instance - AuthService"){
-        sh "docker run -d --rm --name authapi -p 8081:8081 authapi:v1.0"
+        sh "docker run -d --rm --name testauthapi -p 8081:8081 test-authapi:v1.0"
      }
 	
 	stage("User Acceptance Test - AuthService"){
@@ -32,7 +32,7 @@ node {
 		
 		if (response=="Yes") {
 		stage('Deploy to Kubernetes cluster -AuthService'){
-			sh "kubectl create deployment authapi --image=authapi:v1.0"
+			sh "kubectl create deployment authapi --image=test-authapi:v1.0"
 			sh "kubectl set env deployment/authapi API_HOST=10.107.63.253:8080"
 			sh "kubectl expose deployment authapi --type=LoadBalancer --port=8081"
 		}
