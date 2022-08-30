@@ -33,7 +33,7 @@ node {
 		if (response=="Yes") {
 		stage('Deploy to Kubernetes cluster -AuthService'){
 			sh "kubectl create deployment test-project-auth --image=test-authapi:v1.0"
-			sh "kubectl set env deployment/test-project-auth API_HOST=10.107.63.253:8080"
+			sh "kubectl set env deployment/test-project-auth API_HOST=10.103.154.36:8080"
 			sh "kubectl expose deployment test-project-auth --type=LoadBalancer --port=8081"
 		}
 	  }
