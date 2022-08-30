@@ -1,6 +1,6 @@
 node {
 	stage("Checkout - AuthService"){
-		git branch: 'main', url: 'https://github.com/dipendrashrestha1281/msd-dataservice'
+		git branch: 'main', url: 'https://github.com/dipendrashrestha1281/msd-authservice'
 	}
 	
 	stage("Gradle Build - AuthService"){
